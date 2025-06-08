@@ -1,0 +1,121 @@
+name: Build and deploy
+
+on:
+  push:
+    tags: 'v[0-9]+.[0-9]+.[0-9]+*'
+  workflow_dispatch: 
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  build-aws-cdk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install NPM packages
+        shell: bash
+        run: npm ci
+      
+      - name: Synth AWS-CDK stack
+        run: npx cdk synth --ci --no-lookups --strict
+
+      - name: Upload synth artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aws-cdk-synth
+          path: cdk.out
+
+  deploy-aws-cdk:
+    needs: 
+      - build-aws-cdk
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: aws-cdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install NPM packages
+        shell: bash
+        run: npm ci
+
+      - uses: mercurialworld/chaeri-actions/setup-aws@v1
+        with:
+          role-to-assume: repo
+
+      - name: Download synth artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aws-cdk-synth
+          path: cdk.out
+
+      - name: Deploy stack
+        run: npx cdk deploy --ci --no-lookups --require-approval=never --app=cdk.out --outputs-file=outputs.json
+
+      - name: Upload outputs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aws-cdk-outputs
+          path: outputs.json
+
+  deploy-codedeploy:
+    needs:
+      - deploy-aws-cdk
+    permissions:
+      id-token: write
+      contents: read
+    environment:
+      name: codedeploy
+      url: ${{ steps.deploy.outputs.deployment-url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Download outputs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aws-cdk-outputs
+
+      - name: Parse outputs
+        id: parse
+        uses: mercurialworld/chaeri-actions/parse-cdk@v1
+        with:
+          file: outputs.json
+      
+      - name: Setup AWS
+        uses: mercurialworld/chaeri-actions/setup-aws@v1
+        with:
+          role-to-assume: ${{ steps.parse.outputs.ActionsCodeDeployRoleARN }}
+      
+      # - name: Create environment/config files
+      #   working-directory: codedeploy
+      #   run: |
+      #     cat << EOF > .env
+      #     EOF
+      
+      - name: Deploy 
+        id: deploy
+        uses: mercurialworld/chaeri-actions/deploy-codedeploy@v1
+        with:
+          path: codedeploy
+          stack: ${{ steps.parse.outputs.stack-name }}
+          application: ${{ steps.parse.outputs.ApplicationName }}
+          deployment-group: ${{ steps.parse.outputs.DeploymentGroupName }}
+

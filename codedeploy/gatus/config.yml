@@ -1,0 +1,37 @@
+# anchor
+
+_defaults:
+  docker: &docker
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+
+# config
+
+storage:
+  type: postgres
+  path: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
+
+ui:
+  title: "Gatus for penguins - pocha.moe"
+  header: "pocha.moe uptime"
+  description: "Gatus monitoring for pocha.moe."
+
+endpoints:
+  - name: bot
+    group: mafuyu
+    <<: *docker
+    url: "${SOCKET_PROXY}/containers/mafuyu-bot-1/json"
+  
+  - name: music-presence
+    group: pocha.moe 
+    <<: *docker
+    url: "${SOCKET_PROXY}/containers/media-players-site-1/json"
+  
+  - name: homepage
+    group: pocha.moe
+    url: "https://pocha.moe"
+    conditions:
+      - "[STATUS] == 200"
