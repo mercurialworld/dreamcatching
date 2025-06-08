@@ -4,7 +4,7 @@ _defaults:
   docker: &docker
     conditions:
       - "[STATUS] == 200"
-      - "[BODY].State.Health.Status == healthy"
+      - "[BODY].State.Status == running"
     ui:
       hide-hostname: true
 
