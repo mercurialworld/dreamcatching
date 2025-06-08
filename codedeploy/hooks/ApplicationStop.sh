@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euox pipefail
 
-cd /var/lib/codedeploy-apps/pocha-moe
+cd /var/lib/codedeploy-apps/dreamcatching
 
 docker compose down
