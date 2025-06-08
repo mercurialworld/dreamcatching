@@ -16,8 +16,9 @@ storage:
 
 ui:
   title: "Gatus for penguins - pocha.moe"
-  header: "pocha.moe uptime"
+  header: "Uptime for penguins"
   description: "Gatus monitoring for pocha.moe."
+  logo: "https://pocha.moe/pipfavicon.png"
 
 endpoints:
   - name: bot
@@ -25,7 +26,7 @@ endpoints:
     <<: *docker
     url: "${SOCKET_PROXY}/containers/mafuyu-bot-1/json"
   
-  - name: music-presence
+  - name: musicpresence
     group: pocha.moe 
     <<: *docker
     url: "${SOCKET_PROXY}/containers/media-players-site-1/json"
