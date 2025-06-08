@@ -2,7 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { CodeDeployApp, getRepoFromEnv } from "chaeri";
 import { Construct } from "constructs";
 
-export class PochaMoeStack extends cdk.Stack {
+export class DreamcatchingStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: cdk.StackProps) {
         super(scope, id, props);
 
