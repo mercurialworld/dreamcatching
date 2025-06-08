@@ -12,8 +12,6 @@ services:
     volumes:
       - ./gatus:/config
       - gatus_data:/data
-    networks:
-      - web
     restart: unless-stopped
     depends_on:
       - postgres
@@ -30,8 +28,6 @@ services:
       POSTGRES_DB: gatus
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
-    networks:
-      - web
   
   socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
@@ -44,11 +40,16 @@ services:
     read_only: true
     tmpfs:
       - /run
-    networks:
-      - web
 
-networks:
-  web:
+  docker-state-exporter:
+    image: karugaru/docker_state_exporter
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    ports:
+      - "127.0.0.1:5202:8080"
+    restart: unless-stopped
 
 volumes:
   pg_data:
