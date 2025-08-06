@@ -54,6 +54,10 @@ services:
       - "127.0.0.1:5202:8080"
     restart: unless-stopped
 
+secrets:
+  gatus-secrets:
+    file: gatus-secrets.yml
+
 volumes:
   pg_data:
   gatus_data:
