@@ -104,11 +104,14 @@ jobs:
         with:
           role-to-assume: ${{ steps.parse.outputs.ActionsCodeDeployRoleARN }}
       
-      # - name: Create environment/config files
-      #   working-directory: codedeploy
-      #   run: |
-      #     cat << EOF > .env
-      #     EOF
+      - name: Create environment/config files
+        working-directory: codedeploy
+        run: |
+          cat << EOF > gatus-secrets.yml
+          alerting:
+            discord:
+              webhook-url: "${{ secrets.GATUS_DISCORD_WEBHOOK_URL }}"
+          EOF
       
       - name: Deploy 
         id: deploy

@@ -10,6 +10,13 @@ _defaults:
 
 # config
 
+alerting:
+  discord:
+    default-alert:
+      failure-threshold: 5
+      success-threshold: 3
+      send-on-resolved: true
+
 storage:
   type: postgres
   path: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
@@ -25,14 +32,20 @@ endpoints:
     group: mafuyu
     <<: *docker
     url: "${SOCKET_PROXY}/containers/mafuyu-bot-1/json"
+    alerts:
+      - type: discord
   
   - name: musicpresence
     group: pocha.moe 
     <<: *docker
     url: "${SOCKET_PROXY}/containers/media-players-site-1/json"
+    alerts:
+      - type: discord
   
   - name: homepage
     group: pocha.moe
     url: "https://pocha.moe"
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: discord

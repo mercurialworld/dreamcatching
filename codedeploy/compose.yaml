@@ -12,6 +12,9 @@ services:
     volumes:
       - ./gatus:/config
       - gatus_data:/data
+    secrets:
+      - source: gatus-secrets
+        target: /config/gatus-secrets.yml
     restart: unless-stopped
     depends_on:
       - postgres
