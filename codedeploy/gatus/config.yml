@@ -35,12 +35,19 @@ endpoints:
     alerts:
       - type: discord
   
-  - name: musicpresence
-    group: pocha.moe 
-    <<: *docker
-    url: "${SOCKET_PROXY}/containers/media-players-site-1/json"
-    alerts:
-      - type: discord
+  # - name: musicpresence
+  #   group: pocha.moe 
+  #   <<: *docker
+  #   url: "${SOCKET_PROXY}/containers/media-players-site-1/json"
+  #   alerts:
+  #     - type: discord
+
+  - name: api
+    group: pocha.moe
+    url: "https://api.pocha.moe/v1/health"
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].status == ok"
   
   - name: homepage
     group: pocha.moe
