@@ -24,7 +24,10 @@ storage:
 ui:
   title: "Gatus for penguins - pocha.moe"
   header: "Uptime for penguins"
+  login-subtitle: "and also for non-penguins"
   description: "Gatus monitoring for pocha.moe."
+  dashboard-heading: "Uptime check!"
+  dashboard-subheading: "Uptime for my one bot and 3 subdomains."
   logo: "https://pocha.moe/pipfavicon.png"
   buttons:
     - name: Source
