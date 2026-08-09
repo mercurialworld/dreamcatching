@@ -26,6 +26,9 @@ ui:
   header: "Uptime for penguins"
   description: "Gatus monitoring for pocha.moe."
   logo: "https://pocha.moe/pipfavicon.png"
+  buttons:
+    - name: Source
+      link: https://github.com/mercurialworld/dreamcatching
 
 endpoints:
   - name: bot
@@ -35,13 +38,6 @@ endpoints:
     alerts:
       - type: discord
   
-  # - name: musicpresence
-  #   group: pocha.moe 
-  #   <<: *docker
-  #   url: "${SOCKET_PROXY}/containers/media-players-site-1/json"
-  #   alerts:
-  #     - type: discord
-
   - name: api
     group: pocha.moe
     url: "https://api.pocha.moe/v1/health"
