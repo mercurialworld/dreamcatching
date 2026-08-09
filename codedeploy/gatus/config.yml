@@ -49,6 +49,13 @@ endpoints:
       - "[STATUS] == 200"
       - "[BODY].status == ok"
   
+  - name: cache 
+    group: pocha.moe
+    url: "https://cache.pocha.moe/health"
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].status == ok"
+
   - name: homepage
     group: pocha.moe
     url: "https://pocha.moe"
