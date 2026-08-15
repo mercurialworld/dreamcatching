@@ -2,6 +2,8 @@
 
 alerting:
   discord:
+    title: ":penguin: STATUS CHANGE"
+    message-content: "<@468955173671403521> ATTENTION"
     default-alert:
       failure-threshold: 5
       success-threshold: 3

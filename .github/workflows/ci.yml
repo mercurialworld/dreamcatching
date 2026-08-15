@@ -112,6 +112,8 @@ jobs:
             discord:
               webhook-url: "${{ secrets.GATUS_DISCORD_WEBHOOK_URL }}"
           EOF
+
+          cp gatus-secrets.yml gatus/
       
       - name: Deploy 
         id: deploy
