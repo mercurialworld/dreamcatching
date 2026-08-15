@@ -1,13 +1,3 @@
-# anchor
-
-_defaults:
-  docker: &docker
-    conditions:
-      - "[STATUS] == 200"
-      - "[BODY].State.Status == running"
-    ui:
-      hide-hostname: true
-
 # config
 
 alerting:
@@ -36,8 +26,12 @@ ui:
 endpoints:
   - name: bot
     group: mafuyu
-    <<: *docker
-    url: "${SOCKET_PROXY}/containers/mafuyu-bot-1/json"
+    url: "mercurial:7001/health"
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].status == ok"
+    ui:
+      hide-hostname: true
     alerts:
       - type: discord
   
@@ -47,6 +41,8 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[BODY].status == ok"
+    alerts:
+      - type: discord
   
   - name: cache 
     group: pocha.moe
@@ -54,6 +50,8 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[BODY].status == ok"
+    alerts:
+      - type: discord
 
   - name: homepage
     group: pocha.moe

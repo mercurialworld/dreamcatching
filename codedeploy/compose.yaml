@@ -5,6 +5,7 @@ services:
     ports:
       - 5201:8080
     environment:
+      GATUS_CONFIG_PATH: /config
       SOCKET_PROXY: http://socket-proxy:2375/v1.45
       POSTGRES_DB: gatus
       POSTGRES_USER: username
