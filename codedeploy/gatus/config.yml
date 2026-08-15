@@ -5,7 +5,7 @@ alerting:
     title: ":penguin: STATUS CHANGE"
     message-content: "<@468955173671403521> ATTENTION"
     default-alert:
-      failure-threshold: 5
+      failure-threshold: 3
       success-threshold: 3
       send-on-resolved: true
 
