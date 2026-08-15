@@ -4,7 +4,7 @@
     "dependencies": {
         "@types/bun": "^1.2.15",
         "@types/node": "^22.15.23",
-        "chaeri": "github:mercurialworld/chaeri",
+        "chaeri": "github:mercurialworld/chaeri#semver:^v0.2.8",
         "ts-node": "^10.9.2",
         "tslib": "^2.8.1",
         "typescript": "^5.8.3"
