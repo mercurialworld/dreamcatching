@@ -7,7 +7,7 @@ export class DreamcatchingStack extends cdk.Stack {
         super(scope, id, props);
 
         new CodeDeployApp(this, "CodeDeploy", {
-            githubRepo: getRepoFromEnv(),
+            githubRepo: getRepoFromEnv({withID: false}),
             codedeployGitHubEnv: "codedeploy",
             onPremInstanceTag: "dreamcatching",
         });
